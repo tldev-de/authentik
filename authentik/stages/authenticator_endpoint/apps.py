@@ -10,3 +10,4 @@ class AuthentikStageAuthenticatorEndpointConfig(ManagedAppConfig):
     label = "authentik_stages_authenticator_endpoint"
     verbose_name = "authentik Stages.Authenticator.Endpoint"
     default = True
+    mountpoint = "authenticators/device_trust/"

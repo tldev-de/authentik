@@ -1,14 +1,13 @@
 """Endpoint stage"""
-from typing import Optional
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.views import View
 from rest_framework.serializers import BaseSerializer, Serializer
 
 from authentik.core.types import UserSettingSerializer
 from authentik.flows.models import ConfigurableStage, FriendlyNamedStage, Stage
+from authentik.flows.stage import StageView
 from authentik.lib.models import SerializerModel
 from authentik.stages.authenticator.models import Device
 
@@ -23,7 +22,7 @@ class AuthenticatorEndpointStage(ConfigurableStage, FriendlyNamedStage, Stage):
         return AuthenticatorEndpointStageSerializer
 
     @property
-    def type(self) -> type[View]:
+    def view(self) -> type[StageView]:
         from authentik.stages.authenticator_endpoint.stage import AuthenticatorEndpointStageView
 
         return AuthenticatorEndpointStageView
@@ -32,7 +31,7 @@ class AuthenticatorEndpointStage(ConfigurableStage, FriendlyNamedStage, Stage):
     def component(self) -> str:
         return "ak-stage-authenticator-endpoint-form"
 
-    def ui_user_settings(self) -> Optional[UserSettingSerializer]:
+    def ui_user_settings(self) -> UserSettingSerializer | None:
         return UserSettingSerializer(
             data={
                 "title": self.friendly_name or str(self._meta.verbose_name),
